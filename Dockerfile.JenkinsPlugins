@@ -1,0 +1,20 @@
+FROM centos:7.0.1406
+
+ENV JENKINS_HOME /home/jenkins
+ENV JENKINS_PLUGIN jenkins/plugins
+
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=1000
+ARG gid=1000
+
+USER root
+RUN groupadd -g ${gid} ${group} \
+    && useradd -d "$JENKINS_HOME" -u ${uid} -g ${gid} -m -s /bin/bash ${user}
+
+RUN mkdir -p /root/."$JENKINS_PLUGIN"
+ADD resource/plugins/ /root/."$JENKINS_PLUGIN"
+RUN chown ${user}. /root/."$JENKINS_PLUGIN"
+VOLUME [ "/root/.jenkins/plugins" ]
+ENTRYPOINT sleep infinity
+

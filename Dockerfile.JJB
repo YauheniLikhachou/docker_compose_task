@@ -1,0 +1,12 @@
+FROM centos:7.0.1406
+
+USER root
+
+RUN yum install -y epel-release
+RUN yum install -y python-pip
+RUN pip install PyYAML python-jenkins
+RUN pip install jenkins-job-builder
+COPY resource/resource_jjb /opt/resource_jjb
+RUN chmod +x /opt/resource_jjb/jjb.sh
+EXPOSE 8080
+CMD  /opt/resource_jjb/jjb.sh
